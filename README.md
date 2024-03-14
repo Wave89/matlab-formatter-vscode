@@ -11,6 +11,7 @@ Also usable as standalone without VScode.
 ## Extension Settings
 * `matlab-formatter.indentwidth`: Number of spaces used for indentation.
 * `matlab-formatter.separateBlocks`: Control whether newlines should be added before and after blocks such as for, if, while and so on.
+* `matlab-formatter.deleteEmptyLine`: Remove empty lines.
 * `matlab-formatter.indentMode`: Chose smart indentation mode: indent all functions, indent only nested functions, or don't indent inside any function.
 * `matlab-formatter.addSpaces`: Chose which operators should be wrapped with spaces: all operators, all but power (`^`, `.^`) or don't wrap any operators.
 * `matlab-formatter.matrixIndent`: Chose how matrices should be indented. Either keep all rows aligned or use only one level of indentation.

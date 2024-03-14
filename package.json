@@ -37,6 +37,11 @@
                     "default": true,
                     "description": "add newlines before and after blocks (for, if, etc.)"
                 },
+                "matlab-formatter.deleteEmptyLine": {
+                    "type": "boolean",
+                    "default": true,
+                    "description": "remove empty lines"
+                },
                 "matlab-formatter.indentMode": {
                     "type": "string",
                     "enum": [
