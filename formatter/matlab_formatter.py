@@ -96,14 +96,16 @@ class Formatter:
     continueline = 0
     iscomment = 0
     separateBlocks = False
+    ReplaceFile = False
     ignoreLines = 0
 
-    def __init__(self, indentwidth, separateBlocks, indentMode, operatorSep, matrixIndent):
+    def __init__(self, indentwidth, separateBlocks, indentMode, operatorSep, matrixIndent, ReplaceFile):
         self.iwidth = indentwidth
         self.separateBlocks = separateBlocks
         self.indentMode = indentMode
         self.operatorSep = operatorSep
         self.matrixIndent = matrixIndent
+        self.ReplaceFile = ReplaceFile
 
     def cleanLineFromStringsAndComments(self, line):
         split = self.extract_string_comment(line)
@@ -355,7 +357,7 @@ class Formatter:
         return (0, self.indent() + self.format(line).strip())
 
     # format file from line 'start' to line 'end'
-    def formatFile(self, filename, start, end):
+    def formatFile(self, filename, start, end, ReplaceFile):
         # read lines from file
         wlines = rlines = []
 
@@ -415,15 +417,20 @@ class Formatter:
         if not wlines:
             wlines = ['']
 
-        # write output
-        for line in wlines:
-            print(line)
+        if ReplaceFile:    
+            with open(filename, 'w', encoding='utf-8') as f:
+                for line in wlines:
+                    f.write(line + '\n')
+        else:
+            # write output
+            for line in wlines:
+                print(line)
 
 
 def main():
     options = dict(startLine=1, endLine=None, indentWidth=4,
                    separateBlocks=True, indentMode='',
-                   addSpaces='', matrixIndent='')
+                   addSpaces='', matrixIndent='', ReplaceFile=False)
 
     indentModes = dict(all_functions=1, only_nested_functions=-1, classic=0)
     operatorSpaces = dict(all_operators=1, exclude_pow=0.5, no_spaces=0)
@@ -455,12 +462,13 @@ def main():
         start = options['startLine']
         end = options['endLine']
         sep = options['separateBlocks']
+        ReplaceFile = options['ReplaceFile']
         mode = indentModes.get(options['indentMode'], indentModes['all_functions'])
         opSp = operatorSpaces.get(options['addSpaces'], operatorSpaces['exclude_pow'])
         matInd = matrixIndentation.get(options['matrixIndent'], matrixIndentation['aligned'])
 
-        formatter = Formatter(indent, sep, mode, opSp, matInd)
-        formatter.formatFile(sys.argv[1], start, end)
+        formatter = Formatter(indent, sep, mode, opSp, matInd, ReplaceFile)
+        formatter.formatFile(sys.argv[1], start, end, ReplaceFile)
 
 
 if __name__ == '__main__':
