@@ -97,13 +97,15 @@ class Formatter:
     iscomment = 0
     separateBlocks = False
     ignoreLines = 0
+    charset = 'UTF-8'
 
-    def __init__(self, indentwidth, separateBlocks, indentMode, operatorSep, matrixIndent):
+    def __init__(self, indentwidth, separateBlocks, indentMode, operatorSep, matrixIndent, charset):
         self.iwidth = indentwidth
         self.separateBlocks = separateBlocks
         self.indentMode = indentMode
         self.operatorSep = operatorSep
         self.matrixIndent = matrixIndent
+        self.charset = charset
 
     def cleanLineFromStringsAndComments(self, line):
         split = self.extract_string_comment(line)
@@ -355,7 +357,7 @@ class Formatter:
         return (0, self.indent() + self.format(line).strip())
 
     # format file from line 'start' to line 'end'
-    def formatFile(self, filename, start, end):
+    def formatFile(self, filename, start, end, charset):
         # read lines from file
         wlines = rlines = []
 
@@ -363,7 +365,7 @@ class Formatter:
             with sys.stdin as f:
                 rlines = f.readlines()[start-1:end]
         else:
-            with open(filename, 'r', encoding='UTF-8') as f:
+            with open(filename, 'r', encoding=charset) as f:
                 rlines = f.readlines()[start-1:end]
 
         # take care of empty input
@@ -455,12 +457,13 @@ def main():
         start = options['startLine']
         end = options['endLine']
         sep = options['separateBlocks']
+        charset = options['charset']
         mode = indentModes.get(options['indentMode'], indentModes['all_functions'])
         opSp = operatorSpaces.get(options['addSpaces'], operatorSpaces['exclude_pow'])
         matInd = matrixIndentation.get(options['matrixIndent'], matrixIndentation['aligned'])
 
-        formatter = Formatter(indent, sep, mode, opSp, matInd)
-        formatter.formatFile(sys.argv[1], start, end)
+        formatter = Formatter(indent, sep, mode, opSp, matInd, charset)
+        formatter.formatFile(sys.argv[1], start, end, charset)
 
 
 if __name__ == '__main__':

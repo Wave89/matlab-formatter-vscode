@@ -79,6 +79,11 @@
                     ],
                     "default": "aligned",
                     "description": "Indentation of matrices"
+                },
+                "matlab-formatter.charset": {
+                    "type": "string",
+                    "default": "UTF-8",
+                    "description": "charset"
                 }
             }
         },
