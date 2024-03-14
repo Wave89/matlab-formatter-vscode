@@ -419,8 +419,11 @@ class Formatter:
 
         if ReplaceFile:    
             with open(filename, 'w', encoding='utf-8') as f:
-                for line in wlines:
-                    f.write(line + '\n')
+                for i, line in enumerate(wlines):
+                    if i != len(wlines) - 1:  # if it's not the last line
+                        f.write(line + '\n')
+                    else:  # if it's the last line
+                        f.write(line)
         else:
             # write output
             for line in wlines:
