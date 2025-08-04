@@ -421,6 +421,7 @@ class Formatter:
             with open(filename, 'w', encoding='utf-8') as f:
                 for i, line in enumerate(wlines):
                     f.write(line + '\n')
+                f.write('\r')
         else:
             # write output
             for line in wlines:
